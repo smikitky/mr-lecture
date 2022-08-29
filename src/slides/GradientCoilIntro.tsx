@@ -8,7 +8,8 @@ const GradientCoilIntro: FC = props => {
       <ul>
         <li>
           <strong className="coil">傾斜磁場コイル</strong>
-          ：静磁場の強さに、ちょっとだけ空間方向の傾斜をかける装置。
+          ：静磁場の強さに、ちょっとだけ空間方向の<strong>傾斜</strong>
+          をかける装置。
         </li>
         <li>
           その正体は3方向に組み合わさった電磁石。

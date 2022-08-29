@@ -18,6 +18,24 @@ const Larmor: FC = props => {
           <div className="alert text-center">
             <Katex>\omega_0 = \gamma B_0</Katex>
           </div>
+          <table className="table border">
+            <tbody>
+              <tr>
+                <th>
+                  静磁場 (<Katex>B_0</Katex>)
+                </th>
+                <td>1.5T</td>
+                <td>3.0T</td>
+              </tr>
+              <tr>
+                <th>
+                  ラーモア周波数 (<Katex>\omega_0</Katex>)
+                </th>
+                <td>63.9 MHz</td>
+                <td>127.8 MHz</td>
+              </tr>
+            </tbody>
+          </table>
         </li>
         <li>
           この周波数から少しでもずれたら、水素原子は<strong>共鳴しない</strong>
@@ -25,36 +43,13 @@ const Larmor: FC = props => {
         </li>
         <li>FMラジオの周波数に近いのでこの電波を「ラジオ波」とも呼びます。</li>
       </ul>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              静磁場 (<Katex>B_0</Katex>)
-            </td>
-            <td>1.5T</td>
-            <td>3.0T</td>
-          </tr>
-          <tr>
-            <td>
-              ラーモア周波数 (<Katex>\omega_0</Katex>)
-            </td>
-            <td>63.9 MHz</td>
-            <td>127.8 MHz</td>
-          </tr>
-        </tbody>
-      </table>
     </Slide>
   );
 };
 
 const Slide = styled(_Slide)`
-  td {
-    padding: 0 var(--fontSize);
-    background: var(--highlight);
-    &:nth-child(1) {
-      background: var(--primary);
-      color: white;
-    }
+  table {
+    margin: var(--fontSize) 0;
   }
 `;
 

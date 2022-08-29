@@ -6,8 +6,8 @@ import Katex from '../utils/Katex';
 const orig = String.raw`\{f_0, f_1, \dots, f_{N-1}\}`;
 const transformed = String.raw`\{F_0, F_1, \dots, F_{N-1}\}`;
 
-const fft = String.raw`F_k = \sum^{N-1}_{n=0}f_n\left(\cos\frac{2\pi kn}{N} - i\sin\frac{2\pi kn}{N}\right)`;
-const ifft = String.raw`f_k = \sum^{N-1}_{n=0}F_n\left(\cos\frac{2\pi kn}{N} + i\sin\frac{2\pi kn}{N}\right)`;
+const fft = String.raw`{\color{blue} F_k} = \sum^{N-1}_{n=0}{\color{red}f_n}\left(\cos\frac{2\pi kn}{N} - i\sin\frac{2\pi kn}{N}\right)`;
+const ifft = String.raw`{\color{red}f_k} = \sum^{N-1}_{n=0}{\color{blue}F_n}\left(\cos\frac{2\pi kn}{N} + i\sin\frac{2\pi kn}{N}\right)`;
 
 const FourierCalc: FC = props => {
   return (
@@ -39,7 +39,7 @@ const FourierCalc: FC = props => {
           <strong>情報は失われない</strong>。
         </li>
       </ul>
-      <div>
+      <div className="alert">
         <Katex displayMode>{fft}</Katex>
         <Katex displayMode>{ifft}</Katex>
       </div>

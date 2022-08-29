@@ -1,8 +1,8 @@
-import { FC } from "react";
-import styled from "styled-components";
-import _Slide from "../Slide";
+import { FC } from 'react';
+import styled from 'styled-components';
+import _Slide from '../Slide';
 
-const BasicOfBasic: FC = (props) => {
+const BasicOfBasic: FC = props => {
   return (
     <Slide title="MRIの原理の基礎の基礎の基礎">
       <ol>
@@ -25,12 +25,43 @@ const BasicOfBasic: FC = (props) => {
           このときの電波の強さは元の水素原子の量に比例するので、電波の強さから水素原子の量が測定できます。
         </li>
       </ol>
+      <table className="table border">
+        <tr>
+          <th>"強い静磁場"</th>
+          <td>1.5T</td>
+          <td>ガスボンベがふっとぶ</td>
+        </tr>
+        <tr>
+          <th>"ちょうどいい周波数"</th>
+          <td>
+            63.9MHz
+            <br />
+            <strong>ぴったり</strong>
+          </td>
+          <td>
+            FMラジオの
+            <br />
+            周波数に近い
+          </td>
+        </tr>
+        <tr>
+          <th>"しばらくの間"</th>
+          <td>約0.1秒～数秒</td>
+          <td>
+            この差は重要だが
+            <br />
+            今日は無視
+          </td>
+        </tr>
+      </table>
     </Slide>
   );
 };
 
 const Slide = styled(_Slide)`
-  // Slide-specific styles go here
+  .table {
+    font-size: 90%;
+  }
 `;
 
 export default BasicOfBasic;

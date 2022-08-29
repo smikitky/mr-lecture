@@ -8,6 +8,7 @@ const App: React.FC = props => {
   const [slideSize, setSlideSize] = useState('12px');
 
   const ActiveSlide = slides[slideIndex];
+  const name = ActiveSlide.name;
 
   const next = () => {
     if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
@@ -27,11 +28,11 @@ const App: React.FC = props => {
       <GlobalStyle />
       <SetSizeContext.Provider value={setSlideSize}>
         <SlideContainer
-          onClick={next}
           onWheel={handleWheel}
           style={{ '--w': slideSize } as CSSProperties}
         >
           <ActiveSlide />
+          <div className="name">{name}</div>
         </SlideContainer>
       </SetSizeContext.Provider>
     </>
@@ -46,12 +47,23 @@ const SlideContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: #222222;
+
+  > .name {
+    color: #b13f9a;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`
   html, body {
     margin: 0;
     padding: 0;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 `;
 

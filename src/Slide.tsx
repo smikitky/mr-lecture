@@ -30,15 +30,18 @@ const Slide: React.FC<{
 };
 
 const StyledDiv = styled.div`
-  width: 100vw;
+  aspect-ratio: 640/480;
+  @media (min-aspect-ratio: 4/3) {
+    height: 100vh;
+  }
+  @media (max-aspect-ratio: 4/3) {
+    width: 100vw;
+  }
 
   --fontSize: calc(var(--w) * 0.03);
   --primary: #b13f9a;
-  --highlight: #eeeeee;
 
   font-size: var(--fontSize);
-  max-height: 100vh;
-  aspect-ratio: 640/480;
   background: white;
   overflow: hidden;
   position: relative;
@@ -48,6 +51,11 @@ const StyledDiv = styled.div`
     padding: calc(var(--fontSize) * 0.4) calc(var(--fontSize) * 2);
     background: #eeeeee;
     font-size: 130%;
+    margin: 0;
+  }
+
+  ul,
+  ol {
     margin: 0;
   }
 
@@ -63,7 +71,7 @@ const StyledDiv = styled.div`
   }
 
   .alert {
-    background: var(--highlight);
+    background: #88888844;
     padding: calc(var(--fontSize) * 0.5);
     border-radius: calc(var(--fontSize) * 0.5);
   }
@@ -76,9 +84,41 @@ const StyledDiv = styled.div`
     object-fit: contain;
   }
 
+  .table {
+    border-collapse: collapse;
+    td,
+    th {
+      padding: 0 var(--fontSize);
+    }
+    th {
+      background: var(--primary);
+      color: white;
+    }
+    &.border {
+      td, th {
+        border: 1px solid violet;
+      }
+    }
+  }
+
+  }
+
   &.black {
     background: black;
     color: white;
+  }
+
+  input[type='range'] {
+    &::-webkit-slider-runnable-track {
+      background: silver;
+      border-radius: var(--fontSize);
+    }
+  }
+
+  button {
+    font-size: calc(var(--fontSize) * 0.7);
+    background: white;
+    border: 1px solid gray;
   }
 
   .original {
@@ -93,12 +133,19 @@ const StyledDiv = styled.div`
   flex-flow: column;
 
   .slide-content {
-    flex-grow: 1;
+    flex: 1 1 auto;
     padding: calc(var(--fontSize) * 1);
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .h-flex {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
   }
 `;
 

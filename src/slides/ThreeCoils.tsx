@@ -1,18 +1,18 @@
-import { FC } from "react";
-import _Slide from "../Slide";
-import styled from "styled-components";
+import { FC } from 'react';
+import _Slide from '../Slide';
+import styled from 'styled-components';
 
-const ThreeCoils: FC = (props) => {
+const ThreeCoils: FC = props => {
   return (
     <Slide title="MRIの主要構成部品3つ">
-      <table>
+      <table className="table border">
         <tbody>
           <tr>
-            <td>
+            <th>
               <strong className="coil">静磁場コイル</strong>
               <br />
               <small>（大きい電磁石）</small>
-            </td>
+            </th>
             <td>
               <ul>
                 <li>1.5テスラ～3テスラくらい</li>
@@ -24,11 +24,11 @@ const ThreeCoils: FC = (props) => {
             </td>
           </tr>
           <tr>
-            <td>
+            <th>
               <strong className="coil">傾斜磁場コイル</strong>
               <br />
               <small>（小さい電磁石）</small>
-            </td>
+            </th>
             <td>
               <ul>
                 <li>0.001テスラくらい</li>
@@ -41,11 +41,11 @@ const ThreeCoils: FC = (props) => {
             </td>
           </tr>
           <tr>
-            <td>
+            <th>
               <strong className="coil">RFコイル</strong>
               <br />
               <small>（アンテナもどき）</small>
-            </td>
+            </th>
             <td>
               <ul>
                 <li>0.000001テスラくらい</li>
@@ -64,14 +64,8 @@ const ThreeCoils: FC = (props) => {
 };
 
 const Slide = styled(_Slide)`
-  tr:hover {
-    background: #eeeeee;
-  }
-  td:nth-child(1) {
-    width: calc(var(--fontSize) * 8);
-    background: var(--highlight);
-    border-radius: var(--fontSize);
-    text-align: center;
+  th {
+    width: calc(var(--fontSize) * 10);
     &:first-line {
       color: var(--primary);
     }
