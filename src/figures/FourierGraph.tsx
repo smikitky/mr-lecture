@@ -9,6 +9,7 @@ import React, {
 import { useImmer } from 'use-immer';
 import { fft } from 'fft-js';
 import styled from 'styled-components';
+import classNames from 'classnames';
 
 const N = 512;
 
@@ -20,10 +21,10 @@ const FourierGraph: FC = props => {
   const [prevPos, setPrevPos] = useState<{ x: number; y: number } | undefined>(
     undefined
   );
-  const [maxLines, setMaxLines] = useState(10);
+  const [maxLines, setMaxLines] = useState(0);
+  const [highlighted, setHighlighted] = useState<null | number>(null);
   const [drawMain, setDrawMain] = useState(true);
   const [dragging, setDragging] = useState(false);
-  const [showAmps, setShowAmps] = useState(true);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current!;
@@ -46,9 +47,9 @@ const FourierGraph: FC = props => {
 
     // sin waves
     ctx.strokeStyle = '#00aaff';
-    ctx.lineWidth = 1;
     for (let k = 0; k < maxLines; k++) {
       ctx.beginPath();
+      ctx.lineWidth = k === highlighted ? 5 : 1;
       ctx.moveTo(0, height / 2);
       for (let x = 0; x < N; x++) {
         const w = (2 * Math.PI * k) / N;
@@ -91,7 +92,7 @@ const FourierGraph: FC = props => {
       }
       ctx.stroke();
     }
-  }, [drawMain, fftResults, input, maxLines]);
+  }, [drawMain, fftResults, input, maxLines, highlighted]);
 
   const handlePointerDown = () => {
     setDragging(true);
@@ -158,6 +159,11 @@ const FourierGraph: FC = props => {
     };
   }, [draw]);
 
+  const handleAmpClick = (i: number) => {
+    if (highlighted !== i) setHighlighted(i);
+    else setHighlighted(null);
+  };
+
   return (
     <StyledDiv>
       <div className="menu">
@@ -173,16 +179,6 @@ const FourierGraph: FC = props => {
           />
           Draw main
         </label>
-        <label>
-          <input
-            type="checkbox"
-            onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
-              setShowAmps(ev.target.checked)
-            }
-            checked={showAmps}
-          />
-          Smplitudes
-        </label>
       </div>
       <canvas
         ref={canvasRef}
@@ -192,7 +188,11 @@ const FourierGraph: FC = props => {
         onPointerOut={handlePointerUp}
         onPointerMove={handlePointerMove}
       />
-      {showAmps && <AmpDisplay fftResults={fftResults} />}
+      <AmpDisplay
+        fftResults={fftResults}
+        onClick={handleAmpClick}
+        highlighted={highlighted}
+      />
     </StyledDiv>
   );
 };
@@ -200,8 +200,10 @@ const FourierGraph: FC = props => {
 const AmpDisplay: FC<{
   max?: number;
   fftResults: [number, number][];
+  highlighted: number | null;
+  onClick: (index: number) => void;
 }> = React.memo(props => {
-  const { max = 15, fftResults } = props;
+  const { max = 15, fftResults, highlighted, onClick } = props;
   const items = fftResults
     .slice(0, max)
     .map(f => [f[0], f[1], Math.sqrt(f[0] * f[0] + f[1] * f[1])]);
@@ -212,7 +214,11 @@ const AmpDisplay: FC<{
       <ul className="amplitudes-list">
         {items.map((item, i) => {
           return (
-            <li key={i} className="amp">
+            <li
+              key={i}
+              className={classNames('amp', { highlighted: i === highlighted })}
+              onClick={() => onClick(i)}
+            >
               <div
                 className="bar"
                 style={{ right: `${100 - (item[2] / maxF) * 100}%` }}
@@ -230,11 +236,11 @@ const AmpDisplay: FC<{
 
 const StyledDiv = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(var(--fontSize) * 20);
   display: grid;
   grid-template-areas: 'm m' 'c a';
   grid-template-rows: calc(var(--fontSize) * 1.4) auto;
-  grid-template-columns: calc(var(--fontSize) * 23) auto;
+  grid-template-columns: calc(var(--fontSize) * 23) calc(var(--fontSize) * 5);
   justify-content: center;
   gap: 10px 0;
   .menu {
@@ -253,9 +259,9 @@ const StyledDiv = styled.div`
     touch-action: none;
   }
   .amplitudes-card {
+    background: #eeeeee;
     grid-area: a;
     padding: 10px;
-    width: 120px;
     user-select: none;
     margin-left: 10px;
     min-height: 0;
@@ -278,6 +284,9 @@ const StyledDiv = styled.div`
       margin-bottom: 2px;
       position: relative;
       z-index: 0;
+      &.highlighted {
+        background: yellow;
+      }
       & .bar {
         background: #ccccff;
         position: absolute;

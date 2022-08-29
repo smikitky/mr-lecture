@@ -63,6 +63,7 @@ const StyledDiv = styled.div`
     color: var(--primary);
     &.coil {
       color: #ff7500;
+      text-shadow: 2px 2px white;
     }
   }
 

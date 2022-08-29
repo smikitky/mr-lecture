@@ -24,8 +24,8 @@ const Larmor: FC = props => {
                 <th>
                   静磁場 (<Katex>B_0</Katex>)
                 </th>
-                <td>1.5T</td>
-                <td>3.0T</td>
+                <td>1.5 T</td>
+                <td>3.0 T</td>
               </tr>
               <tr>
                 <th>
@@ -38,8 +38,8 @@ const Larmor: FC = props => {
           </table>
         </li>
         <li>
-          この周波数から少しでもずれたら、水素原子は<strong>共鳴しない</strong>
-          ので励起されません。（あとの説明で重要）
+          この周波数からずれたら、水素原子は<strong>共鳴しない</strong>
+          ので励起されません（あとの説明で重要）。
         </li>
         <li>FMラジオの周波数に近いのでこの電波を「ラジオ波」とも呼びます。</li>
       </ul>

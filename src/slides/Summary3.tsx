@@ -10,7 +10,8 @@ const Summary3: FC = props => {
           コイルの組み合わせだけで人間の体内が見える仕組みについて、大ざっぱに説明しました。
         </li>
         <li>
-          フーリエ変換は以下の URL で試せます
+          このスライド（フーリエ変換の実演も含む）は以下の URL
+          で見ることができます。
           <br />
           <a
             href="https://mri-smikitky.netlify.app/"
@@ -22,7 +23,7 @@ const Summary3: FC = props => {
         </li>
         <li>
           短時間でまとめるためにかなりいい加減な議論をしているので、気になったら
-          MRI の原理の本を読みましょう。
+          真面目な MRI の原理の本を読んでください。
         </li>
       </ul>
     </Slide>
@@ -30,7 +31,9 @@ const Summary3: FC = props => {
 };
 
 const Slide = styled(_Slide)`
-  // Slide-specific styles go here
+  li {
+    margin: var(--fontSize) 0;
+  }
 `;
 
 export default Summary3;

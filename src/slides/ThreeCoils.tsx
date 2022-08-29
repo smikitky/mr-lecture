@@ -15,7 +15,7 @@ const ThreeCoils: FC = props => {
             </th>
             <td>
               <ul>
-                <li>1.5テスラ～3テスラくらい</li>
+                <li>1.5 ～ 3 テスラくらい</li>
                 <li>強くて均一な静磁場をひたすら維持する超伝導の電磁石</li>
               </ul>
             </td>
@@ -31,7 +31,7 @@ const ThreeCoils: FC = props => {
             </th>
             <td>
               <ul>
-                <li>0.001テスラくらい</li>
+                <li>0.001 テスラくらい</li>
                 <li>静磁場をちょっとだけ不均一にする</li>
                 <li>本日の主役ですがちょっと後で説明します</li>
               </ul>
@@ -48,7 +48,7 @@ const ThreeCoils: FC = props => {
             </th>
             <td>
               <ul>
-                <li>0.000001テスラくらい</li>
+                <li>0.000001 テスラくらい</li>
                 <li>体に密接させて電磁波を送受信する（アンテナ役）</li>
               </ul>
             </td>

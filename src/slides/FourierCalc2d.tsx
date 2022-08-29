@@ -50,7 +50,7 @@ const FourierCald2d: FC = props => {
         <small>
           <Katex>{mat2}</Katex>
         </small>
-        という行列は、以下のように変換できる。（純粋に数学上の計算）
+        という行列は、以下のように変換できる（純粋に数学上の計算）。
       </p>
       <div className="alert">
         <Katex displayMode>{trans1}</Katex>

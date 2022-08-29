@@ -8,12 +8,16 @@ const Summary2: FC = props => {
       <ul className="items">
         <div className="item">
           <img src="/images/summary-1.png" alt="" />
-          <div className="desc">傾斜磁場で特定スライスを励起</div>
+          <div className="desc">傾斜磁場で特定スライスのみを励起する</div>
         </div>
+        <span>→</span>
         <div className="item">
           <img src="/images/summary-2.png" alt="" />
-          <div className="desc">傾斜磁場でスライス内の波を作る</div>
+          <div className="desc">
+            傾斜磁場でスライス内の波を作り k 空間を埋めていく
+          </div>
         </div>
+        <span>→</span>
         <div className="item">
           <img src="/images/summary-3.png" alt="" />
           <div className="desc">フーリエ逆変換で元画像を得る</div>
@@ -30,21 +34,23 @@ const Slide = styled(_Slide)`
     flex-flow: row;
     height: 100%;
     justify-content: center;
-    gap: calc(var(--fontSize) * 1);
+    align-items: center;
+    gap: calc(var(--fontSize) * 0.2);
     .item {
       display: flex;
       flex-flow: column;
       align-items: center;
+      justify-content: center;
       gap: var(--fontSize);
       img {
-        width: calc(var(--fontSize) * 9);
-        height: calc(var(--fontSize) * 9);
+        width: calc(var(--fontSize) * 8);
+        height: calc(var(--fontSize) * 8);
       }
       .desc {
         text-align: center;
         margin: calc(var(--fontSize) * 0.5);
         font-weight: bolder;
-        font-size: 150%;
+        font-size: 120%;
       }
       width: calc(var(--fontSize) * 9.5);
       height: 100%;

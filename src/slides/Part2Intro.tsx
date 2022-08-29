@@ -14,7 +14,7 @@ const Part2Intro: FC = props => {
         <span className="arrow">→</span>
         <img src="/images/t2wi-proton.jpg" alt="" />
       </div>
-      <p>このスライス以外からの信号は考えなくて構いません。</p>
+      <p>このスライス以外から信号は返ってこないので考えなくて構いません。</p>
     </Slide>
   );
 };

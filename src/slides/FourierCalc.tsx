@@ -3,32 +3,35 @@ import styled from 'styled-components';
 import _Slide from '../Slide';
 import Katex from '../utils/Katex';
 
-const orig = String.raw`\{f_0, f_1, \dots, f_{N-1}\}`;
-const transformed = String.raw`\{F_0, F_1, \dots, F_{N-1}\}`;
+export const orig = String.raw`\color{red} \{f_0, f_1, \dots, f_{N-1}\}`;
+export const transformed = String.raw`\color{blue} \{F_0, F_1, \dots, F_{N-1}\}`;
 
-const fft = String.raw`{\color{blue} F_k} = \sum^{N-1}_{n=0}{\color{red}f_n}\left(\cos\frac{2\pi kn}{N} - i\sin\frac{2\pi kn}{N}\right)`;
-const ifft = String.raw`{\color{red}f_k} = \sum^{N-1}_{n=0}{\color{blue}F_n}\left(\cos\frac{2\pi kn}{N} + i\sin\frac{2\pi kn}{N}\right)`;
+export const fk = String.raw`\color{red} \{ f_k \}`;
+export const Fk = String.raw`\color{blue} \{ F_k \}`;
+
+export const fft = String.raw`
+  {\color{blue} F_k} =
+  \sum^{N-1}_{n=0}{\color{red}f_n}
+    \left(\cos\frac{2\pi kn}{N} - i\sin\frac{2\pi kn}{N}\right)
+`;
+export const ifft = String.raw`
+  {\color{red}f_k} =
+  \sum^{N-1}_{n=0}{\color{blue}F_n}
+    \left(\cos\frac{2\pi kn}{N} + i\sin\frac{2\pi kn}{N}\right)
+`;
 
 const FourierCalc: FC = props => {
   return (
     <Slide title="フーリエ変換 (Fourier Transformation)">
       <ul>
         <li>
-          フーリエ変換：
-          <strong>
-            あらゆる形の関数は、サインカーブの線形和の形に変換できる
-          </strong>
-          。純粋に紙の計算で導ける数学の定理。
-        </li>
-        <li>
-          <span className="original">
-            <Katex>{orig}</Katex>
-          </span>
-          という任意の数列を、以下の公式で{' '}
-          <span className="transformed">
-            <Katex>{transformed}</Katex>
-          </span>{' '}
-          という数列に変換できる。
+          <Katex>{orig}</Katex>
+          という長さ <Katex>N</Katex> の任意の数列は、以下の公式で{' '}
+          <Katex>{transformed}</Katex> という数列に変換できる（<Katex>i</Katex>{' '}
+          は虚数単位）。
+          <div className="alert">
+            <Katex displayMode>{fft}</Katex>
+          </div>
         </li>
         <li>
           逆変換したら、もとの{' '}
@@ -36,19 +39,24 @@ const FourierCalc: FC = props => {
             <Katex>{orig}</Katex>
           </span>{' '}
           という数列に戻せる。
-          <strong>情報は失われない</strong>。
+          <div className="alert">
+            <Katex displayMode>{ifft}</Katex>
+          </div>
+        </li>
+        <li>
+          つまり <Katex>{orig}</Katex> と <Katex>{transformed}</Katex> は
+          <strong>同じ情報を含んでいる</strong>
+          （純粋の紙の上で計算できる数学の公式） 。
         </li>
       </ul>
-      <div className="alert">
-        <Katex displayMode>{fft}</Katex>
-        <Katex displayMode>{ifft}</Katex>
-      </div>
     </Slide>
   );
 };
 
 const Slide = styled(_Slide)`
-  // Slide-specific styles go here
+  .alert {
+    padding: 0.1em;
+  }
 `;
 
 export default FourierCalc;

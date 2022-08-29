@@ -6,11 +6,16 @@ const Intermission: FC = props => {
   return (
     <Slide className="black" title="前半戦終了">
       <p className="alert">
-        <div className="bang">！</div>ここから難しくなります
+        <div className="bang">！</div>
+        <big>ここから難しくなります</big>
       </p>
       <p>
-        いま励起したスライス<strong>内</strong>で <strong>2 次元的に</strong>
-        水素原子がどんな分布をしているのか、どうやって測定するのでしょう?
+        いま励起したスライス<strong>内</strong>で、
+        <br />
+        <strong>2 次元的に</strong>
+        水素原子がどんな分布をしているのか、
+        <br />
+        どうやって測定するのでしょう?
       </p>
     </Slide>
   );

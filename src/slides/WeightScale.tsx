@@ -16,13 +16,22 @@ const WeightScale: FC = props => {
           は単なるアンテナ (?)
           なので、被験者にいっぺんに電波を浴びせたり、全身から返ってくる電波をいっぺんに受信することしかできない。
         </li>
+        <li>
+          このままでは水素原子の総量に比例した強さの電波を受信することしかできない。
+        </li>
       </ul>
       <div className="fig">
         <video src="/images/slime1.mp4" autoPlay muted loop />
         <div className="alert">
-          <strong>「どこに水素原子があるのか」</strong>
+          画像を得るためには
           <br />
-          の情報がないと画像にならない
+          <strong>
+            「どこにどの程度
+            <br />
+            水素原子があるのか」
+          </strong>
+          <br />
+          の情報が必要
         </div>
       </div>
     </Slide>

@@ -18,6 +18,7 @@ import Wave2dDesc from './slides/Wave2dDesc';
 import KSpaceScan from './slides/KSpaceScan';
 import KSpaceScan2 from './slides/KSpaceScan2';
 import FourierCalc from './slides/FourierCalc';
+import FourierCalcDesc from './slides/FourierCalcDesc';
 import FourierDemo from './slides/FourierDemo';
 import FourierUsage from './slides/FourierUsage';
 import FourierCalc2d from './slides/FourierCalc2d';
@@ -47,6 +48,7 @@ const slides: FC[] = [
   KSpaceScan,
   KSpaceScan2,
   FourierCalc,
+  FourierCalcDesc,
   FourierDemo,
   FourierUsage,
   FourierCalc2d,
