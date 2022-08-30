@@ -106,8 +106,8 @@ const FourierImage: FC = props => {
     const canvas = oCanvasRef.current!;
     const ctx = canvas.getContext('2d')!;
     const rect = canvas.getBoundingClientRect();
-    const x = ev.clientX - rect.x;
-    const y = ev.clientY - rect.y;
+    const x = ((ev.clientX - rect.x) / rect.width) * N;
+    const y = ((ev.clientY - rect.y) / rect.height) * N;
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
     ctx.ellipse(x, y, 10, 10, 0, 0, Math.PI * 2);
