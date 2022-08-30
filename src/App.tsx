@@ -2,20 +2,31 @@ import React, { useState, WheelEventHandler, CSSProperties } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import slides from './slides';
 import SetSizeContext from './utils/SetSizeContext';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 
-const App: React.FC = props => {
-  const [slideIndex, setSlideIndex] = useState(0);
+const Switch: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [slideSize, setSlideSize] = useState('12px');
 
-  const ActiveSlide = slides[slideIndex];
-  const name = ActiveSlide.name;
-
   const next = () => {
-    if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
+    const currentSlideIndex = Number(location.pathname.slice(1)) || 1;
+    if (currentSlideIndex < slides.length) {
+      navigate(`/${currentSlideIndex + 1}`);
+    }
   };
 
   const prev = () => {
-    if (slideIndex > 0) setSlideIndex(slideIndex - 1);
+    const currentSlideIndex = Number(location.pathname.slice(1));
+    if (currentSlideIndex > 1) {
+      navigate(`/${currentSlideIndex - 1}`);
+    }
   };
 
   const handleWheel: WheelEventHandler = ev => {
@@ -23,19 +34,31 @@ const App: React.FC = props => {
     if (ev.deltaY < 0) prev();
   };
 
+  const Title = slides[0];
+
   return (
-    <>
+    <SetSizeContext.Provider value={setSlideSize}>
+      <SlideContainer
+        onWheel={handleWheel}
+        style={{ '--w': slideSize } as CSSProperties}
+      >
+        <Routes>
+          <Route index element={<Title />} />
+          {slides.map((Slide, i) => {
+            return <Route key={i} path={String(i + 1)} element={<Slide />} />;
+          })}
+        </Routes>
+      </SlideContainer>
+    </SetSizeContext.Provider>
+  );
+};
+
+const App: React.FC = props => {
+  return (
+    <BrowserRouter>
       <GlobalStyle />
-      <SetSizeContext.Provider value={setSlideSize}>
-        <SlideContainer
-          onWheel={handleWheel}
-          style={{ '--w': slideSize } as CSSProperties}
-        >
-          <ActiveSlide />
-          <div className="name">{name}</div>
-        </SlideContainer>
-      </SetSizeContext.Provider>
-    </>
+      <Switch />
+    </BrowserRouter>
   );
 };
 
