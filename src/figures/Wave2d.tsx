@@ -22,7 +22,7 @@ type ProtonDrawer = (
 ) => void;
 
 const drawCircle: ProtonDrawer = (ctx, x, y, size, phase) => {
-  const radius = size / 2 - 0.5;
+  const radius = size / 2;
   if (radius <= 0) return;
   ctx.save();
   try {
@@ -127,8 +127,8 @@ const Wave2d: FC = props => {
         for (let y = 0; y < N; y++) {
           const phase = phases[x][y];
           const protonSize = applyDensity
-            ? (cellSize * densityMap[y * N + x]) / 256
-            : cellSize;
+            ? (cellSize * densityMap[y * N + x]) / 256 + 1
+            : cellSize - 1;
           const cx = cellSize * x + cellSize / 2;
           const cy = cellSize * y + cellSize / 2;
           const drawer = protonType === 'circle' ? drawCircle : drawSquare;
