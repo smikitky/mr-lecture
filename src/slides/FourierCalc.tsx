@@ -25,16 +25,15 @@ const FourierCalc: FC = props => {
     <Slide title="フーリエ変換 (Fourier Transformation)">
       <ul>
         <li>
-          <Katex>{orig}</Katex>
-          という長さ <Katex>N</Katex> の任意の数列は、以下の公式で{' '}
-          <Katex>{transformed}</Katex> という数列に変換できる（<Katex>i</Katex>{' '}
-          は虚数単位）。
+          <Katex>{orig}</Katex> という長さ <Katex>N</Katex>{' '}
+          の任意の数列を、以下の公式で <Katex>{transformed}</Katex>{' '}
+          という数列に変換できる（<Katex>i</Katex> は虚数単位）。
           <div className="alert">
             <Katex displayMode>{fft}</Katex>
           </div>
         </li>
         <li>
-          逆変換したら、もとの{' '}
+          以下の公式で<strong>逆変換</strong>をすると、もとの{' '}
           <span className="original">
             <Katex>{orig}</Katex>
           </span>{' '}
@@ -55,7 +54,7 @@ const FourierCalc: FC = props => {
 
 const Slide = styled(_Slide)`
   .alert {
-    padding: 0.1em;
+    padding: 0;
   }
 `;
 

@@ -109,6 +109,12 @@ const StyledDiv = styled.div`
     color: white;
   }
 
+  input[type="number"]  {
+    height: calc(var(--fontSize) * 1);
+    font-size: calc(var(--fontSize) * 0.7);
+    width: calc(var(--fontSize) * 3);
+  }
+
   input[type='range'] {
     &::-webkit-slider-runnable-track {
       background: silver;
@@ -117,8 +123,12 @@ const StyledDiv = styled.div`
   }
 
   button {
+    display: block;
     font-size: calc(var(--fontSize) * 0.7);
     background: white;
+    &:hover {
+      background: #eeeeee;
+    }
     border: 1px solid gray;
   }
 

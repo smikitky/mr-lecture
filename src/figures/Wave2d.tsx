@@ -346,17 +346,7 @@ const StyledDiv = styled.div`
     display: flex;
     flex-direction: column;
     gap: var(--gridSize);
-    .rephase {
-      gridarea: r;
-      width: 120px;
-    }
-    .pause {
-      gridarea: p;
-      width: 120px;
-    }
-    .square {
-      gridarea: s;
-    }
+    width: calc(var(--gridSize) * 8.5);
     .k-space-pane {
       grid-area: k;
       display: flex;
