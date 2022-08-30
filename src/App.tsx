@@ -1,4 +1,9 @@
-import React, { useState, WheelEventHandler, CSSProperties } from 'react';
+import React, {
+  useState,
+  WheelEventHandler,
+  CSSProperties,
+  useRef
+} from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import slides from './slides';
 import SetSizeContext from './utils/SetSizeContext';
@@ -9,24 +14,40 @@ import {
   useLocation,
   useNavigate
 } from 'react-router-dom';
+import {
+  createPreloadManager,
+  PreloadManager,
+  PreloadManagerContext,
+  usePreloadManager
+} from './utils/PreloadManager';
 
 const Switch: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const preloadManager = usePreloadManager();
   const [slideSize, setSlideSize] = useState('12px');
 
+  const parseCurrentSlideIndex = () => Number(location.pathname.slice(1)) || 1;
+
+  const startPreload = (index: number) => {
+    const str = slides[index]?.toString() ?? '';
+    const matches = Array.from(
+      str.matchAll(/\/images\/(.+?)\.(png|jpg|mp4)/g)
+    ).map(s => s[0]);
+    if (matches.length > 0) preloadManager.preload(matches);
+  };
+
   const next = () => {
-    const currentSlideIndex = Number(location.pathname.slice(1)) || 1;
+    const currentSlideIndex = parseCurrentSlideIndex();
     if (currentSlideIndex < slides.length) {
       navigate(`/${currentSlideIndex + 1}`);
+      startPreload(currentSlideIndex + 1);
     }
   };
 
   const prev = () => {
-    const currentSlideIndex = Number(location.pathname.slice(1));
-    if (currentSlideIndex > 1) {
-      navigate(`/${currentSlideIndex - 1}`);
-    }
+    const currentSlideIndex = parseCurrentSlideIndex();
+    if (currentSlideIndex > 1) navigate(`/${currentSlideIndex - 1}`);
   };
 
   const handleWheel: WheelEventHandler = ev => {
@@ -54,11 +75,18 @@ const Switch: React.FC = () => {
 };
 
 const App: React.FC = props => {
+  const preloadManager = useRef<PreloadManager | null>(null);
+  if (preloadManager.current === null) {
+    preloadManager.current = createPreloadManager();
+  }
+
   return (
-    <BrowserRouter>
+    <PreloadManagerContext.Provider value={preloadManager.current}>
       <GlobalStyle />
-      <Switch />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Switch />
+      </BrowserRouter>
+    </PreloadManagerContext.Provider>
   );
 };
 
