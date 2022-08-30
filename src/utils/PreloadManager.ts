@@ -13,11 +13,9 @@ export const createPreloadManager = (): PreloadManager => {
     items.forEach(item => {
       if (!started.has(item)) {
         started.add(item);
-        const type = item.split('.').pop() === 'mp4' ? 'video' : 'image';
         const elem = document.createElement('link');
-        elem.rel = 'preload';
+        elem.rel = 'prefetch';
         elem.href = item;
-        elem.as = type;
         document.head.appendChild(elem);
       }
     });

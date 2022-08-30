@@ -142,9 +142,9 @@ const FourierGraph: FC = props => {
 
   useEffect(() => {
     let finished = false;
-    const canvas = canvasRef.current!;
     const tick = () => {
-      if (finished) return;
+      const canvas = canvasRef.current!;
+      if (finished || !canvas) return;
       const { width, height } = canvas.getBoundingClientRect();
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;

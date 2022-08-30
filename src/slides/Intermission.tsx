@@ -5,10 +5,10 @@ import _Slide from '../Slide';
 const Intermission: FC = props => {
   return (
     <Slide className="black" title="前半戦終了">
-      <p className="alert">
+      <div className="alert">
         <div className="bang">！</div>
         <big>ここから難しくなります</big>
-      </p>
+      </div>
       <p>
         いま励起したスライス<strong>内</strong>で、
         <br />

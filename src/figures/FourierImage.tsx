@@ -63,6 +63,7 @@ const FourierImage: FC = props => {
     () =>
       debounce(() => {
         const canvas = oCanvasRef.current!;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d')!;
         const data = fromCanvas(ctx);
         const fftResults = swapQuadrants(normalize(fft2d(data, N)), N);
