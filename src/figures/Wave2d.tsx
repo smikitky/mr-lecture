@@ -13,15 +13,18 @@ const phaseToColor = (phase: number) => {
   return '#' + hex;
 };
 
-const drawCircle = (
+type ProtonDrawer = (
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   size: number,
   phase: number
-) => {
-  ctx.save();
+) => void;
+
+const drawCircle: ProtonDrawer = (ctx, x, y, size, phase) => {
   const radius = size / 2 - 0.5;
+  if (radius <= 0) return;
+  ctx.save();
   try {
     ctx.beginPath();
     ctx.fillStyle = phaseToColor(phase);
@@ -36,13 +39,7 @@ const drawCircle = (
   }
 };
 
-const drawSquare = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  size: number,
-  phase: number
-) => {
+const drawSquare: ProtonDrawer = (ctx, x, y, size, phase) => {
   ctx.save();
   const radius = (size / 2) * (0.5 + 0.4 * Math.sin(phase));
   try {
@@ -55,12 +52,33 @@ const drawSquare = (
   }
 };
 
+const makeDensityMap = async (): Promise<Uint8Array> => {
+  const res = await fetch('/images/t2wi.jpg');
+  const blob = await res.blob();
+  const img = new Image();
+  await new Promise((resolve, reject) => {
+    img.src = URL.createObjectURL(blob);
+    img.addEventListener('load', resolve);
+  });
+  const canvas = document.createElement('canvas');
+  canvas.width = N;
+  canvas.height = N;
+  const ctx = canvas.getContext('2d')!;
+  ctx.drawImage(img, 0, 0, N, N);
+  const imgData = ctx.getImageData(0, 0, N, N);
+  const densityMap = new Uint8Array(N * N);
+  for (let i = 0; i < N * N; i++) densityMap[i] = imgData.data[i * 4];
+  return densityMap;
+};
+
 const Wave2d: FC = props => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gradientX, setGradientX] = useState(0);
   const [gradientY, setGradientY] = useState(0);
   const [pause, setPause] = useState(false);
   const [protonType, setProtonType] = useState<'circle' | 'square'>('circle');
+  const [applyDensity, setApplyDensity] = useState(false);
+  const [densityMap, setDensityMap] = useState<Uint8Array | null>(null);
   const [k, setK] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const phasesRef = useRef<number[][]>();
   if (!phasesRef.current) {
@@ -70,6 +88,11 @@ const Wave2d: FC = props => {
   const lastRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
+    makeDensityMap().then(setDensityMap);
+  }, []);
+
+  useEffect(() => {
+    if (!densityMap) return;
     const canvas = canvasRef.current!;
     let finished = false;
     const tick = (now: DOMHighResTimeStamp) => {
@@ -98,18 +121,18 @@ const Wave2d: FC = props => {
       });
 
       ctx.clearRect(0, 0, width, height);
-      const cellSize = width / N;
       ctx.strokeStyle = '#ffffff';
+      const cellSize = width / N;
       for (let x = 0; x < N; x++) {
         for (let y = 0; y < N; y++) {
           const phase = phases[x][y];
+          const protonSize = applyDensity
+            ? (cellSize * densityMap[y * N + x]) / 256
+            : cellSize;
           const cx = cellSize * x + cellSize / 2;
           const cy = cellSize * y + cellSize / 2;
-          if (protonType === 'circle') {
-            drawCircle(ctx, cx, cy, width / N, phase);
-          } else {
-            drawSquare(ctx, cx, cy, width / N, phase);
-          }
+          const drawer = protonType === 'circle' ? drawCircle : drawSquare;
+          drawer(ctx, cx, cy, protonSize, phase);
         }
       }
 
@@ -119,7 +142,15 @@ const Wave2d: FC = props => {
     return () => {
       finished = true;
     };
-  }, [gradientX, gradientY, pause, phases, protonType]);
+  }, [
+    gradientX,
+    gradientY,
+    pause,
+    phases,
+    protonType,
+    densityMap,
+    applyDensity
+  ]);
 
   const rephase = (kx: number, ky: number) => {
     for (let x = 0; x < N; x++) {
@@ -192,8 +223,18 @@ const Wave2d: FC = props => {
             type="checkbox"
             className="square"
             onChange={handleProtonTypeChange}
+            checked={protonType === 'square'}
           />
           : Square
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            className="apply-density"
+            onChange={() => setApplyDensity(!applyDensity)}
+            checked={applyDensity}
+          />
+          : Density
         </label>
         <div className="k-space-pane">
           <KSpace x={k.x} y={k.y} onKSpaceChange={rephase} />
