@@ -2,7 +2,8 @@ import React, {
   useState,
   WheelEventHandler,
   CSSProperties,
-  useRef
+  useRef,
+  useEffect
 } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import slides from './slides';
@@ -27,16 +28,6 @@ const Switch: React.FC = () => {
   const preloadManager = usePreloadManager();
   const [slideSize, setSlideSize] = useState('12px');
 
-  const parseCurrentSlideIndex = () => Number(location.pathname.slice(1)) || 1;
-
-  const startPreload = (index: number) => {
-    const str = slides[index]?.toString() ?? '';
-    const matches = Array.from(
-      str.matchAll(/\/images\/(.+?)\.(png|jpg|mp4)/g)
-    ).map(s => s[0]);
-    if (matches.length > 0) preloadManager.preload(matches);
-  };
-
   const next = () => {
     const currentSlideIndex = parseCurrentSlideIndex();
     if (currentSlideIndex < slides.length) {
@@ -48,6 +39,27 @@ const Switch: React.FC = () => {
   const prev = () => {
     const currentSlideIndex = parseCurrentSlideIndex();
     if (currentSlideIndex > 1) navigate(`/${currentSlideIndex - 1}`);
+  };
+
+  useEffect(() => {
+    const handleKeydown = (ev: KeyboardEvent) => {
+      if (document.activeElement instanceof HTMLInputElement) return;
+      if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(ev.key)) next();
+      if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(ev.key)) prev();
+      if (ev.key === 'Home') navigate('/');
+    };
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
+  });
+
+  const parseCurrentSlideIndex = () => Number(location.pathname.slice(1)) || 1;
+
+  const startPreload = (index: number) => {
+    const str = slides[index]?.toString() ?? '';
+    const matches = Array.from(
+      str.matchAll(/\/images\/(.+?)\.(png|jpg|mp4)/g)
+    ).map(s => s[0]);
+    if (matches.length > 0) preloadManager.preload(matches);
   };
 
   const handleWheel: WheelEventHandler = ev => {

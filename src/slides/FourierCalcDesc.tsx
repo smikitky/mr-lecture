@@ -38,6 +38,9 @@ const Slide = styled(_Slide)`
   .alert {
     padding: 0.1em;
   }
+  img {
+    width: 80%;
+  }
   .small-math {
     padding: 1em;
     font-size: 65%;

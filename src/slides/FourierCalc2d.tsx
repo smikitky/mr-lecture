@@ -56,9 +56,6 @@ const FourierCald2d: FC = props => {
         <Katex displayMode>{trans1}</Katex>
         <Katex displayMode>{trans2}</Katex>
       </div>
-      <p>
-        <small>無理に読まなくていいです</small>
-      </p>
     </Slide>
   );
 };

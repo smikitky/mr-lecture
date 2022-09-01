@@ -1,56 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { drawCircle, drawSquare } from './proton-drawers';
 
 const N = 32;
-
-const phaseToColor = (phase: number) => {
-  const hex = (
-    Math.floor(Math.max(0, -Math.sin(phase)) * 256) * 256 * 256 +
-    Math.floor(Math.max(0, Math.sin(phase) * 256))
-  )
-    .toString(16)
-    .padStart(6, '0');
-  return '#' + hex;
-};
-
-type ProtonDrawer = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  size: number,
-  phase: number
-) => void;
-
-const drawCircle: ProtonDrawer = (ctx, x, y, size, phase) => {
-  const radius = size / 2;
-  if (radius <= 0) return;
-  ctx.save();
-  try {
-    ctx.beginPath();
-    ctx.fillStyle = phaseToColor(phase);
-    ctx.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + radius * Math.cos(phase), y - radius * Math.sin(phase));
-    ctx.stroke();
-  } finally {
-    ctx.restore();
-  }
-};
-
-const drawSquare: ProtonDrawer = (ctx, x, y, size, phase) => {
-  ctx.save();
-  const radius = (size / 2) * (0.5 + 0.4 * Math.sin(phase));
-  try {
-    ctx.beginPath();
-    ctx.fillStyle = '#000000';
-    ctx.rect(x - radius, y - radius, radius * 2, radius * 2);
-    ctx.fill();
-  } finally {
-    ctx.restore();
-  }
-};
 
 const makeDensityMap = async (): Promise<Uint8Array> => {
   const res = await fetch('/images/t2wi.jpg');
@@ -77,7 +29,7 @@ const Wave2d: FC = props => {
   const [gradientY, setGradientY] = useState(0);
   const [pause, setPause] = useState(false);
   const [protonType, setProtonType] = useState<'circle' | 'square'>('circle');
-  const [applyDensity, setApplyDensity] = useState(false);
+  const [applyDensity, setApplyDensity] = useState(true);
   const [densityMap, setDensityMap] = useState<Uint8Array | null>(null);
   const [k, setK] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const phasesRef = useRef<number[][]>();
@@ -225,7 +177,7 @@ const Wave2d: FC = props => {
             onChange={handleProtonTypeChange}
             checked={protonType === 'square'}
           />
-          : Square
+          Square
         </label>
         <label>
           <input
@@ -234,7 +186,7 @@ const Wave2d: FC = props => {
             onChange={() => setApplyDensity(!applyDensity)}
             checked={applyDensity}
           />
-          : Density
+          Density
         </label>
         <div className="k-space-pane">
           <KSpace x={k.x} y={k.y} onKSpaceChange={rephase} />

@@ -105,12 +105,12 @@ const StyledDiv = styled.div`
   }
 
   &.black {
-    background: black;
+    background-color: black;
     color: white;
   }
 
   input[type="number"]  {
-    height: calc(var(--fontSize) * 1);
+    height:var(--fontSize);
     font-size: calc(var(--fontSize) * 0.7);
     width: calc(var(--fontSize) * 3);
   }
@@ -122,9 +122,27 @@ const StyledDiv = styled.div`
     }
   }
 
+  input[type='checkbox'] {
+    width: calc(var(--fontSize) * 0.8);
+    height: calc(var(--fontSize) * 0.8);
+  }
+
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--fontSize);
+    gap: calc(var(--fontSize) * 0.2);
+    font-size: calc(var(--fontSize) * 0.7);
+    user-select: none;
+    border: 1px solid gray;
+    padding: 0 calc(var(--fontSize) * 0.2);
+  }
+
   button {
     display: block;
     font-size: calc(var(--fontSize) * 0.7);
+    height: var(--fontSize);
     background: white;
     &:hover {
       background: #eeeeee;

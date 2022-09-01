@@ -23,7 +23,7 @@ const FourierGraph: FC = props => {
   );
   const [maxLines, setMaxLines] = useState(0);
   const [highlighted, setHighlighted] = useState<null | number>(null);
-  const [drawMain, setDrawMain] = useState(true);
+  const [drawSum, setDrawSum] = useState(true);
   const [dragging, setDragging] = useState(false);
 
   const draw = useCallback(() => {
@@ -70,29 +70,29 @@ const FourierGraph: FC = props => {
     }
 
     // sum wave
-    ctx.strokeStyle = '#0000ff';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(0, height / 2);
-    for (let x = 0; x < N; x++) {
-      const pos = rawToLocal(x, sum[x]);
-      ctx.lineTo(pos.x, pos.y);
-    }
-    ctx.stroke();
-
-    // main wave
-    if (drawMain) {
+    if (drawSum) {
+      ctx.strokeStyle = '#0000ff';
       ctx.lineWidth = 3;
-      ctx.strokeStyle = '#ff0000';
       ctx.beginPath();
       ctx.moveTo(0, height / 2);
       for (let x = 0; x < N; x++) {
-        const pos = rawToLocal(x, input[x]);
+        const pos = rawToLocal(x, sum[x]);
         ctx.lineTo(pos.x, pos.y);
       }
       ctx.stroke();
     }
-  }, [drawMain, fftResults, input, maxLines, highlighted]);
+
+    // main wave
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.moveTo(0, height / 2);
+    for (let x = 0; x < N; x++) {
+      const pos = rawToLocal(x, input[x]);
+      ctx.lineTo(pos.x, pos.y);
+    }
+    ctx.stroke();
+  }, [drawSum, fftResults, input, maxLines, highlighted]);
 
   const handlePointerDown = () => {
     setDragging(true);
@@ -138,7 +138,7 @@ const FourierGraph: FC = props => {
 
   useEffect(() => {
     draw();
-  }, [draw, input, fftResults, maxLines, drawMain]);
+  }, [drawSum, input, fftResults, maxLines, draw]);
 
   useEffect(() => {
     let finished = false;
@@ -167,18 +167,23 @@ const FourierGraph: FC = props => {
   return (
     <StyledDiv>
       <div className="menu">
-        <button onClick={() => setMaxLines(0)}>zero</button>
-        <input type="number" value={maxLines} onChange={handleMaxLinesChange} />
+        <div className="num-waves">
+          <input
+            type="number"
+            value={maxLines}
+            onChange={handleMaxLinesChange}
+          />
+          <button onClick={() => setMaxLines(0)}>Zero</button>
+        </div>
         <label>
           <input
             type="checkbox"
-            onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
-              setDrawMain(ev.target.checked)
-            }
-            checked={drawMain}
+            onChange={ev => setDrawSum(ev.target.checked)}
+            checked={drawSum}
           />
-          Draw main
+          Draw Sum
         </label>
+        <button onClick={() => setInput(new Array(N).fill(0))}>Reset</button>
       </div>
       <canvas
         ref={canvasRef}
@@ -207,7 +212,7 @@ const AmpDisplay: FC<{
   const items = fftResults
     .slice(0, max)
     .map(f => [f[0], f[1], Math.sqrt(f[0] * f[0] + f[1] * f[1])]);
-  const maxF = Math.max(...items.map(i => i[2]));
+  const maxF = Math.max(...items.map(i => i[2])) || 1;
   return (
     <div className="amplitudes-card">
       <div>成分</div>
@@ -250,6 +255,12 @@ const StyledDiv = styled.div`
     gap: 15px;
     align-items: center;
   }
+  .num-waves {
+    display: flex;
+    input {
+      width: calc(var(--fontSize) * 2);
+    }
+  }
   .canvas {
     width: 100%;
     height: 100%;
@@ -279,7 +290,6 @@ const StyledDiv = styled.div`
     liststyle-type: none;
     font-size: calc(var(--fontSize) * 0.5);
     & li {
-      line-height: 1.2;
       background-repeat: no-repeat;
       margin-bottom: 2px;
       position: relative;
@@ -291,8 +301,8 @@ const StyledDiv = styled.div`
         background: #ccccff;
         position: absolute;
         left: 0;
-        top: 0;
-        bottom: 0;
+        top: 10%;
+        bottom: 10%;
         z-index: -1;
       }
     }

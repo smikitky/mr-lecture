@@ -11,7 +11,7 @@ const Summary1: FC = props => {
     <Slide title="まとめ">
       <ul>
         <li>
-          MRIで直接スライス内の特定の位置の水素原子量 <Katex>{orig}</Katex>{' '}
+          MRIで直接的にスライス内の特定の位置の水素原子量 <Katex>{orig}</Katex>{' '}
           を求めることはできません。
         </li>
         <li>
@@ -25,7 +25,8 @@ const Summary1: FC = props => {
           </big>
         </li>
         <li>
-          あとはフーリエ逆変換で元の画像 <Katex>{orig}</Katex> を計算できます。
+          ここから<strong>フーリエ逆変換</strong>で元の画像{' '}
+          <Katex>{orig}</Katex> を計算できます。
         </li>
       </ul>
     </Slide>

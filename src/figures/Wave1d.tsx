@@ -1,5 +1,6 @@
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { drawCircle } from './proton-drawers';
 
 const N = 30;
 
@@ -41,12 +42,19 @@ const Wave1d: FC = props => {
       }
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = '#00aaff';
+      ctx.fillStyle = '#888888';
       phases.forEach((phase, i) => {
         ctx.beginPath();
-        const h = height * (0.5 + 0.5 * Math.sin(phase));
-        ctx.rect((i * width) / N, height - h, width / N - 2, h);
+        const h = height * (0.5 + 0.48 * Math.sin(phase));
+        ctx.rect((i * width) / N, height - h - 5, width / N - 2, 10);
         ctx.fill();
+        drawCircle(
+          ctx,
+          (i + 0.5) * (width / N),
+          height / 2,
+          width / N - 2,
+          phase
+        );
       });
 
       requestAnimationFrame(tick);
