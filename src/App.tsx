@@ -22,14 +22,49 @@ import {
   usePreloadManager
 } from './utils/PreloadManager';
 
+const Nav: React.FC<{
+  currentSlide: number;
+  onNext: () => void;
+  onPrev: () => void;
+}> = props => {
+  const { currentSlide, onNext, onPrev } = props;
+  return (
+    <StyledNav>
+      <button onClick={onPrev} disabled={currentSlide === 0}>
+        ◀
+      </button>
+      <button onClick={onNext} disabled={currentSlide === slides.length - 1}>
+        ▶
+      </button>
+    </StyledNav>
+  );
+};
+
+const StyledNav = styled.nav`
+  opacity: 0.3;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 0.5em;
+  padding: 0.5em;
+  background: #000000;
+  button {
+    padding: 0.5em 1.5em;
+  }
+`;
+
 const Switch: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const preloadManager = usePreloadManager();
   const [slideSize, setSlideSize] = useState('12px');
 
+  const currentSlideIndex = Number(location.pathname.slice(1)) || 1;
+
+  const touchEnabled = 'ontouchstart' in window;
+
   const next = () => {
-    const currentSlideIndex = parseCurrentSlideIndex();
     if (currentSlideIndex < slides.length) {
       navigate(`/${currentSlideIndex + 1}`);
       startPreload(currentSlideIndex + 1);
@@ -37,7 +72,6 @@ const Switch: React.FC = () => {
   };
 
   const prev = () => {
-    const currentSlideIndex = parseCurrentSlideIndex();
     if (currentSlideIndex > 1) navigate(`/${currentSlideIndex - 1}`);
   };
 
@@ -51,8 +85,6 @@ const Switch: React.FC = () => {
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
   });
-
-  const parseCurrentSlideIndex = () => Number(location.pathname.slice(1)) || 1;
 
   const startPreload = (index: number) => {
     const str = slides[index]?.toString() ?? '';
@@ -82,6 +114,9 @@ const Switch: React.FC = () => {
           })}
         </Routes>
       </SlideContainer>
+      {touchEnabled && (
+        <Nav onNext={next} onPrev={prev} currentSlide={currentSlideIndex} />
+      )}
     </SetSizeContext.Provider>
   );
 };
