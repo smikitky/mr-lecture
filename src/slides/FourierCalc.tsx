@@ -28,7 +28,9 @@ const FourierCalc: FC = props => {
           <Katex>{orig}</Katex> という長さ <Katex>N</Katex>{' '}
           の任意の数列を、以下の式で <Katex>{transformed}</Katex>{' '}
           という数列に変換できる（<Katex>i</Katex> は虚数単位）。
-          <Katex displayMode>{fft}</Katex>
+          <div className="alert text-center">
+            <Katex>{fft}</Katex>
+          </div>
         </li>
         <li>
           以下の式で<strong>逆変換</strong>をすると、もとの{' '}
@@ -36,7 +38,9 @@ const FourierCalc: FC = props => {
             <Katex>{orig}</Katex>
           </span>{' '}
           という数列に戻せる。
-          <Katex displayMode>{ifft}</Katex>
+          <div className="alert text-center">
+            <Katex>{ifft}</Katex>
+          </div>
         </li>
         <li>
           つまり <Katex>{orig}</Katex> と <Katex>{transformed}</Katex> は
@@ -48,6 +52,13 @@ const FourierCalc: FC = props => {
   );
 };
 
-const Slide = styled(_Slide)``;
+const Slide = styled(_Slide)`
+  ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+`;
 
 export default FourierCalc;

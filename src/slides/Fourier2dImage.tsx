@@ -19,7 +19,7 @@ const Fourier2dImage: FC = props => {
         <small>
           <Katex>{mat2}</Katex>
         </small>
-        にフーリエ変換すると、もとの画像にどのような周波数が含まれているのかを示す、別の画像になります。
+        にフーリエ変換すると、もとの画像にどのような周波数成分（縞模様）が含まれているのかを示す、別の画像が得られます。
       </div>
       <div>
         逆に <Katex>{freq}</Katex> から <Katex>{orig}</Katex>{' '}
