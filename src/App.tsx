@@ -1,26 +1,27 @@
 import React, {
-  useState,
-  WheelEventHandler,
   CSSProperties,
+  useEffect,
   useRef,
-  useEffect
+  useState,
+  WheelEventHandler
 } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import slides from './slides';
-import SetSizeContext from './utils/SetSizeContext';
 import {
   BrowserRouter,
-  Routes,
   Route,
+  Routes,
   useLocation,
   useNavigate
 } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import slides from './slides';
+import Icon from './utils/Icon';
 import {
   createPreloadManager,
   PreloadManager,
   PreloadManagerContext,
   usePreloadManager
 } from './utils/PreloadManager';
+import SetSizeContext from './utils/SetSizeContext';
 
 const Nav: React.FC<{
   currentSlide: number;
@@ -31,10 +32,10 @@ const Nav: React.FC<{
   return (
     <StyledNav>
       <button onClick={onPrev} disabled={currentSlide === 0}>
-        ◀
+        <Icon icon="navigate_before" />
       </button>
       <button onClick={onNext} disabled={currentSlide === slides.length}>
-        ▶
+        <Icon icon="navigate_next" />
       </button>
     </StyledNav>
   );
