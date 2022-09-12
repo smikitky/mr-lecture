@@ -10,6 +10,7 @@ import { useImmer } from 'use-immer';
 import { fft } from 'fft-js';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import Icon from '../utils/Icon';
 
 const N = 512;
 
@@ -183,7 +184,10 @@ const FourierGraph: FC = props => {
           />
           Draw Sum
         </label>
-        <button onClick={() => setInput(new Array(N).fill(0))}>Reset</button>
+        <button onClick={() => setInput(new Array(N).fill(0))}>
+          <Icon icon="replay" />
+          &nbsp;Reset
+        </button>
       </div>
       <canvas
         ref={canvasRef}

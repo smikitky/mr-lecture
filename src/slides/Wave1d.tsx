@@ -5,7 +5,7 @@ import Wave1dFig from '../figures/Wave1d';
 
 const Wave1D: FC = props => {
   return (
-    <Slide title="ウェーブ">
+    <Slide title="ウェーブ" interactive>
       <ul>
         <li>
           水素原子を励起した瞬間はすべての水素原子は同じ位相・周波数で一斉に電波を返します。

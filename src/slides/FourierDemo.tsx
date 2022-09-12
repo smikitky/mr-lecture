@@ -5,7 +5,7 @@ import FourierGraph from '../figures/FourierGraph';
 
 const FourierDemo: FC = props => {
   return (
-    <Slide title="本当にそうなっています">
+    <Slide title="本当にそうなっています" interactive>
       <FourierGraph />
     </Slide>
   );

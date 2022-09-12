@@ -5,7 +5,7 @@ import Wave2dFig from '../figures/Wave2d';
 
 const Wave2D: FC = props => {
   return (
-    <Slide title="2次元のウェーブ">
+    <Slide title="2次元のウェーブ" interactive>
       <div className="fig">
         <Wave2dFig />
       </div>

@@ -5,7 +5,7 @@ import Wave2dFig from '../figures/Wave2d';
 
 const KSpaceScan: FC = props => {
   return (
-    <Slide title="さらに">
+    <Slide title="さらに" interactive>
       <ul>
         <li>
           傾斜磁場を細かく調整しながらいろいろな（空間上の）波を作り、信号強度を取得していきます。

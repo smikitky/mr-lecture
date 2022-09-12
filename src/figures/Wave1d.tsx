@@ -1,5 +1,6 @@
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import Icon from '../utils/Icon';
 import { drawCircle } from './proton-drawers';
 
 const N = 30;
@@ -80,7 +81,10 @@ const Wave1d: FC = props => {
   return (
     <StyledDiv>
       <div className="menu">
-        <button onClick={handleRephaseClick}>Rephase</button>
+        <button onClick={handleRephaseClick}>
+          <Icon icon="replay" />
+          &nbsp;Rephase
+        </button>
       </div>
       <canvas ref={canvasRef} className="canvas" />
       <input

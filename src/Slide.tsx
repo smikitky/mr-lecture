@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import { ReactNode, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import Icon from './utils/Icon';
 import SetSizeContext from './utils/SetSizeContext';
 
 const Slide: React.FC<{
   className?: string;
   title?: ReactNode;
   children: ReactNode;
+  interactive?: boolean;
 }> = props => {
-  const { children, title, className = '' } = props;
+  const { children, title, className = '', interactive = false } = props;
   const divRef = useRef<HTMLDivElement>(null);
   const setSlideSize = useContext(SetSizeContext);
 
@@ -23,7 +25,12 @@ const Slide: React.FC<{
 
   return (
     <StyledDiv className={classNames(className)} ref={divRef}>
-      {title && <h1>{title}</h1>}
+      {title && (
+        <h1>
+          {title}
+          {interactive && <Icon className="interactive" icon="touch_app" />}
+        </h1>
+      )}
       <div className="slide-content">{children}</div>
     </StyledDiv>
   );
@@ -47,6 +54,9 @@ const StyledDiv = styled.div`
   position: relative;
 
   h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     color: var(--primary);
     padding: calc(var(--fontSize) * 0.4) calc(var(--fontSize) * 2);
     background: #eeeeee;
@@ -54,9 +64,9 @@ const StyledDiv = styled.div`
     margin: 0;
   }
 
-  ul,
-  ol {
+  ul, ol {
     margin: 0;
+    padding: 0 0 0 calc(var(--fontSize) * 2);
   }
 
   strong {
@@ -69,6 +79,15 @@ const StyledDiv = styled.div`
 
   small {
     font-size: 80%;
+  }
+
+  .interactive {
+    color: white;
+    background: #ff7500;
+    border-radius: calc(var(--fontSize) * 0.4);
+    font-size: calc(var(--fontSize) * 1.6);
+    margin-left: calc(var(--fontSize) * 0.4);
+    user-select: none;
   }
 
   .alert {

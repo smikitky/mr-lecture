@@ -5,7 +5,7 @@ import FourierImage from '../figures/FourierImage';
 
 const FourierDemo2d: FC = props => {
   return (
-    <Slide title="いろんな2次元フーリエ変換">
+    <Slide title="いろんな2次元フーリエ変換" interactive>
       <FourierImage />
     </Slide>
   );

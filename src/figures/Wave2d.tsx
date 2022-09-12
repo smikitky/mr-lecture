@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import Icon from '../utils/Icon';
 import { drawCircle, drawSquare } from './proton-drawers';
 
 const N = 32;
@@ -161,14 +162,25 @@ const Wave2d: FC = props => {
           color="primary"
           onClick={handleRephaseClick}
         >
-          Rephase
+          <Icon icon="replay" />
+          &nbsp;Rephase
         </button>
         <button
           className="pause"
           color={pause ? 'secondary' : 'primary'}
           onClick={handlePauseClick}
         >
-          {pause ? 'Resume' : 'Pause'}
+          {pause ? (
+            <>
+              <Icon icon="play_arrow" />
+              &nbsp;Resume
+            </>
+          ) : (
+            <>
+              <Icon icon="pause" />
+              &nbsp;Pause
+            </>
+          )}
         </button>
         <label>
           <input
