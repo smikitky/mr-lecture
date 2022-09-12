@@ -33,7 +33,7 @@ const Nav: React.FC<{
       <button onClick={onPrev} disabled={currentSlide === 0}>
         ◀
       </button>
-      <button onClick={onNext} disabled={currentSlide === slides.length - 1}>
+      <button onClick={onNext} disabled={currentSlide === slides.length}>
         ▶
       </button>
     </StyledNav>
@@ -41,14 +41,14 @@ const Nav: React.FC<{
 };
 
 const StyledNav = styled.nav`
-  opacity: 0.3;
+  opacity: 0.7;
   position: fixed;
   bottom: 10px;
   right: 10px;
   display: flex;
   gap: 0.5em;
   padding: 0.5em;
-  background: #000000;
+  background: #00000088;
   button {
     padding: 0.5em 1.5em;
   }
