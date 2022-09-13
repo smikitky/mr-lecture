@@ -10,7 +10,6 @@ import lenna from '../fourier/lenna.jpg';
 import snow from '../fourier/snow.jpg';
 import starstripe from '../fourier/starstripe.jpg';
 import zebra from '../fourier/zebra.jpg';
-import { swapQuadrants, normalize, fft2d } from '../utils/fft';
 import styled from 'styled-components';
 
 const N = 256;
@@ -58,17 +57,28 @@ const FourierImage: FC = props => {
   const oCanvasRef = useRef<HTMLCanvasElement>(null);
   const kCanvasRef = useRef<HTMLCanvasElement>(null);
   const [down, setDown] = useState(false);
+  const worker = useRef<any>(
+    new Worker(new URL('../utils/fft.worker.ts', import.meta.url))
+  );
 
   const convert = useMemo(
     () =>
-      debounce(() => {
+      debounce(async () => {
         const canvas = oCanvasRef.current!;
         if (!canvas) return;
         const ctx = canvas.getContext('2d')!;
         const data = fromCanvas(ctx);
-        const fftResults = swapQuadrants(normalize(fft2d(data, N)), N);
+
+        const fftResults = await new Promise<number[]>((resolve, reject) => {
+          const handler = (e: any) => {
+            worker.current.removeEventListener('message', handler);
+            resolve(e.data);
+          };
+          worker.current.addEventListener('message', handler);
+          worker.current.postMessage({ data, N });
+        });
         toCanvas(kCanvasRef.current!.getContext('2d')!, fftResults);
-      }, 50),
+      }, 150),
     []
   );
 

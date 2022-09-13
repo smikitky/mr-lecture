@@ -55,11 +55,11 @@ export const swapQuadrants = (data: number[], N: number) => {
   return result;
 };
 
-// ctx.addEventListener(
-//   'message',
-//   (event: MessageEvent<{ data: number[]; N: number }>) => {
-//     const { data, N } = event.data;
-//     const result = swapQuadrants(normalize(fft2d(data, N)), N);
-//     ctx.postMessage(result);
-//   }
-// );
+globalThis.addEventListener(
+  'message',
+  (event: MessageEvent<{ data: number[]; N: number }>) => {
+    const { data, N } = event.data;
+    const result = swapQuadrants(normalize(fft2d(data, N)), N);
+    globalThis.postMessage(result);
+  }
+);
