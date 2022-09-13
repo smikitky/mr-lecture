@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import {
   BrowserRouter,
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -123,6 +124,7 @@ const Switch: React.FC = () => {
               <Route key={i} path={kebabSlideNames[i]} element={<Slide />} />
             );
           })}
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </SlideContainer>
       {touchEnabled && (
