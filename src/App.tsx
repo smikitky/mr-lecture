@@ -55,25 +55,33 @@ const StyledNav = styled.nav`
   }
 `;
 
+const toKebabStyle = (str: string) =>
+  str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+const kebabSlideNames = slides.map(slide => toKebabStyle(slide.name));
+
 const Switch: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const preloadManager = usePreloadManager();
   const [slideSize, setSlideSize] = useState('12px');
 
-  const currentSlideIndex = Number(location.pathname.slice(1)) || 1;
+  const currentSlideName = location.pathname.slice(1) || kebabSlideNames[0];
+  const currentSlideIndex = kebabSlideNames.indexOf(currentSlideName);
 
   const touchEnabled = 'ontouchstart' in window;
 
   const next = () => {
-    if (currentSlideIndex < slides.length) {
-      navigate(`/${currentSlideIndex + 1}`);
-      startPreload(currentSlideIndex + 1);
+    const nextSlideIndex = currentSlideIndex + 1;
+    if (nextSlideIndex < slides.length) {
+      navigate(`/${kebabSlideNames[nextSlideIndex]}`);
+      if (nextSlideIndex + 1 < slides.length) startPreload(nextSlideIndex + 1);
     }
   };
 
   const prev = () => {
-    if (currentSlideIndex > 1) navigate(`/${currentSlideIndex - 1}`);
+    const prevSlideIndex = currentSlideIndex - 1;
+    if (prevSlideIndex >= 0) navigate(`/${kebabSlideNames[prevSlideIndex]}`);
   };
 
   useEffect(() => {
@@ -111,7 +119,9 @@ const Switch: React.FC = () => {
         <Routes>
           <Route index element={<Title />} />
           {slides.map((Slide, i) => {
-            return <Route key={i} path={String(i + 1)} element={<Slide />} />;
+            return (
+              <Route key={i} path={kebabSlideNames[i]} element={<Slide />} />
+            );
           })}
         </Routes>
       </SlideContainer>
