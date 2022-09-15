@@ -28,7 +28,7 @@ import Summary1 from './slides/Summary1';
 import Summary2 from './slides/Summary2';
 import Summary3 from './slides/Summary3';
 
-const slides: FC[] = [
+const slides: { [key: string]: FC } = {
   Title,
   Intro,
   ThreeCoils,
@@ -57,6 +57,6 @@ const slides: FC[] = [
   Summary1,
   Summary2,
   Summary3
-];
+};
 
 export default slides;

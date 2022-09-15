@@ -35,7 +35,7 @@ const Nav: React.FC<{
       <button onClick={onPrev} disabled={currentSlide === 0}>
         <Icon icon="navigate_before" />
       </button>
-      <button onClick={onNext} disabled={currentSlide === slides.length}>
+      <button onClick={onNext} disabled={currentSlide === slideNames.length}>
         <Icon icon="navigate_next" />
       </button>
     </StyledNav>
@@ -59,9 +59,10 @@ const StyledNav = styled.nav`
 const toKebabStyle = (str: string) =>
   str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-const kebabSlideNames = slides.map(slide => toKebabStyle(slide.name));
+const slideNames = Object.keys(slides);
+const kebabSlideNames = slideNames.map(toKebabStyle);
 
-const Switch: React.FC = () => {
+const SlideSwitcher: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const preloadManager = usePreloadManager();
@@ -74,9 +75,10 @@ const Switch: React.FC = () => {
 
   const next = () => {
     const nextSlideIndex = currentSlideIndex + 1;
-    if (nextSlideIndex < slides.length) {
+    if (nextSlideIndex < slideNames.length) {
       navigate(`/${kebabSlideNames[nextSlideIndex]}`);
-      if (nextSlideIndex + 1 < slides.length) startPreload(nextSlideIndex + 1);
+      if (nextSlideIndex + 1 < slideNames.length)
+        startPreload(nextSlideIndex + 1);
     }
   };
 
@@ -109,7 +111,7 @@ const Switch: React.FC = () => {
     if (ev.deltaY < 0) prev();
   };
 
-  const Title = slides[0];
+  const Title = slides.Title;
 
   return (
     <SetSizeContext.Provider value={setSlideSize}>
@@ -119,9 +121,14 @@ const Switch: React.FC = () => {
       >
         <Routes>
           <Route index element={<Title />} />
-          {slides.map((Slide, i) => {
+          {slideNames.map((slideName, i) => {
+            const Slide = slides[slideName];
             return (
-              <Route key={i} path={kebabSlideNames[i]} element={<Slide />} />
+              <Route
+                key={slideName}
+                path={kebabSlideNames[i]}
+                element={<Slide />}
+              />
             );
           })}
           <Route path="*" element={<Navigate replace to="/" />} />
@@ -134,7 +141,7 @@ const Switch: React.FC = () => {
   );
 };
 
-const App: React.FC = props => {
+const App: React.FC = () => {
   const preloadManager = useRef<PreloadManager | null>(null);
   if (preloadManager.current === null) {
     preloadManager.current = createPreloadManager();
@@ -144,7 +151,7 @@ const App: React.FC = props => {
     <PreloadManagerContext.Provider value={preloadManager.current}>
       <GlobalStyle />
       <BrowserRouter>
-        <Switch />
+        <SlideSwitcher />
       </BrowserRouter>
     </PreloadManagerContext.Provider>
   );
