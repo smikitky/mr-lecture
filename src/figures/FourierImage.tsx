@@ -77,7 +77,9 @@ const FourierImage: FC = props => {
           worker.current.addEventListener('message', handler);
           worker.current.postMessage({ data, N });
         });
-        toCanvas(kCanvasRef.current!.getContext('2d')!, fftResults);
+        if (kCanvasRef.current) {
+          toCanvas(kCanvasRef.current.getContext('2d')!, fftResults);
+        }
       }, 150),
     []
   );
