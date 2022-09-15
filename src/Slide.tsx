@@ -91,9 +91,13 @@ const StyledDiv = styled.div`
   }
 
   .alert {
+    display: block;
     background: #88888844;
     padding: calc(var(--fontSize) * 0.5);
     border-radius: calc(var(--fontSize) * 0.5);
+    &:any-link:hover {
+      background: #aaaaaa44;
+    }
   }
 
   .text-center {
@@ -144,6 +148,12 @@ const StyledDiv = styled.div`
   input[type='checkbox'] {
     width: calc(var(--fontSize) * 0.8);
     height: calc(var(--fontSize) * 0.8);
+  }
+
+  select {
+    font-size: calc(var(--fontSize) * 0.7);
+    height: calc(var(--fontSize) * 1);
+    text-align: center;
   }
 
   label {

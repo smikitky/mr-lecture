@@ -157,19 +157,11 @@ const Wave2d: FC = props => {
         />
       </div>
       <div className="menu">
-        <button
-          className="rephase"
-          color="primary"
-          onClick={handleRephaseClick}
-        >
+        <button onClick={handleRephaseClick}>
           <Icon icon="replay" />
           &nbsp;Rephase
         </button>
-        <button
-          className="pause"
-          color={pause ? 'secondary' : 'primary'}
-          onClick={handlePauseClick}
-        >
+        <button onClick={handlePauseClick}>
           {pause ? (
             <>
               <Icon icon="play_arrow" />
@@ -285,7 +277,7 @@ const StyledDiv = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: var(--spacing);
   .wave-area {
     flex: 0 0 auto;
     display: grid;
@@ -309,7 +301,7 @@ const StyledDiv = styled.div`
   .menu {
     display: flex;
     flex-direction: column;
-    gap: var(--gridSize);
+    gap: calc(var(--gridSize) * 0.5);
     width: calc(var(--gridSize) * 8.5);
     .k-space-pane {
       grid-area: k;
