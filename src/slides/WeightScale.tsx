@@ -42,6 +42,7 @@ const Slide = styled(_Slide)`
   .fig {
     display: flex;
     align-items: center;
+    gap: 0.5em;
     video {
       width: calc(var(--fontSize) * 13);
     }
