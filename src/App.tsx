@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, {
   CSSProperties,
   useEffect,
@@ -30,8 +31,10 @@ const Nav: React.FC<{
   onPrev: () => void;
 }> = props => {
   const { currentSlide, onNext, onPrev } = props;
+  const touchEnabled = 'ontouchstart' in window;
+
   return (
-    <StyledNav>
+    <StyledNav className={classNames({ hover: !touchEnabled })}>
       <button onClick={onPrev} disabled={currentSlide === 0}>
         <Icon icon="navigate_before" />
       </button>
@@ -44,6 +47,13 @@ const Nav: React.FC<{
 
 const StyledNav = styled.nav`
   opacity: 0.7;
+  &.hover {
+    opacity: 0;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+  transition: opacity 0.2s;
   position: fixed;
   bottom: 10px;
   right: 10px;
@@ -70,8 +80,6 @@ const SlideSwitcher: React.FC = () => {
 
   const currentSlideName = location.pathname.slice(1) || kebabSlideNames[0];
   const currentSlideIndex = kebabSlideNames.indexOf(currentSlideName);
-
-  const touchEnabled = 'ontouchstart' in window;
 
   const next = () => {
     const nextSlideIndex = currentSlideIndex + 1;
@@ -134,9 +142,7 @@ const SlideSwitcher: React.FC = () => {
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </SlideContainer>
-      {touchEnabled && (
-        <Nav onNext={next} onPrev={prev} currentSlide={currentSlideIndex} />
-      )}
+      <Nav onNext={next} onPrev={prev} currentSlide={currentSlideIndex} />
     </SetSizeContext.Provider>
   );
 };
