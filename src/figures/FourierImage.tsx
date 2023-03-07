@@ -56,6 +56,7 @@ const fromCanvas = (ctx: CanvasRenderingContext2D): number[] => {
 const FourierImage: FC = props => {
   const oCanvasRef = useRef<HTMLCanvasElement>(null);
   const kCanvasRef = useRef<HTMLCanvasElement>(null);
+  const prevPoint = useRef<[number, number] | undefined>(undefined);
   const [down, setDown] = useState(false);
   const worker = useRef<any>(
     new Worker(new URL('../utils/fft.worker.ts', import.meta.url))
@@ -111,6 +112,7 @@ const FourierImage: FC = props => {
     const canvas = oCanvasRef.current!;
     const ctx = canvas.getContext('2d')!;
     ctx.drawImage(image, 0, 0);
+    prevPoint.current = undefined;
     convert();
   };
 
@@ -121,11 +123,30 @@ const FourierImage: FC = props => {
     const rect = canvas.getBoundingClientRect();
     const x = ((ev.clientX - rect.x) / rect.width) * N;
     const y = ((ev.clientY - rect.y) / rect.height) * N;
+    const r = 10;
     ctx.fillStyle = '#ffffff';
+
+    // Draw line from previous point to current point
+    const [px, py] = prevPoint.current ?? [x, y];
+    const dx = x - px;
+    const dy = y - py;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const steps = Math.ceil(dist);
     ctx.beginPath();
-    ctx.ellipse(x, y, 10, 10, 0, 0, Math.PI * 2);
+    for (let i = 0; i < steps; i++) {
+      const cx = px + (dx * i) / steps;
+      const cy = py + (dy * i) / steps;
+      ctx.ellipse(cx, cy, r, r, 0, 0, Math.PI * 2);
+    }
     ctx.fill();
+
+    prevPoint.current = [x, y];
     convert();
+  };
+
+  const handlePointDown = () => {
+    setDown(true);
+    prevPoint.current = undefined;
   };
 
   useEffect(() => {
@@ -157,7 +178,7 @@ const FourierImage: FC = props => {
             width={N}
             height={N}
             onPointerMove={handlePaint}
-            onPointerDown={() => setDown(true)}
+            onPointerDown={handlePointDown}
             onPointerLeave={() => setDown(false)}
             onPointerUp={() => setDown(false)}
           />
